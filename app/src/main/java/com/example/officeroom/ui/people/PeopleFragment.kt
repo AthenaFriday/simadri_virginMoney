@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.officeroom.databinding.FragmentPeopleBinding
+import com.example.officeroom.ui.people.PersonDetailActivity
 
 class PeopleFragment : Fragment() {
 
@@ -33,16 +34,24 @@ class PeopleFragment : Fragment() {
         peopleAdapter = PeopleAdapter()
         binding.peopleRecyclerView.adapter = peopleAdapter
 
-        peopleAdapter.onItemClick = { person ->
-            val intent = Intent(requireContext(), PersonDetailActivity::class.java)
-            intent.putExtra("person", person)
+        // Set the onItemClick callback
+        peopleAdapter.onItemClick = { person, position ->
+            val intent = Intent(requireContext(), PersonDetailActivity::class.java).apply {
+                putExtra("avatarUrl", person.avatar)
+                putExtra("firstName", person.firstName)
+                putExtra("lastName", person.lastName)
+                putExtra("jobTitle", person.jobtitle)
+                putExtra("email", person.email)
+                putExtra("createdAt", person.createdAt)
+                putExtra("favoriteColor", person.favoriteColor)
+            }
             startActivity(intent)
         }
+
 
         viewModel.people.observe(viewLifecycleOwner) { peopleList ->
             peopleAdapter.submitList(peopleList)
         }
-
         viewModel.loadPeople()
     }
 

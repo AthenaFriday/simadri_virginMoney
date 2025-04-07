@@ -1,5 +1,6 @@
 package com.example.officeroom.ui.people
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.officeroom.data.Person
 import com.example.officeroom.databinding.ItemPersonBinding
+import com.example.officeroom.ui.people.PersonDetailActivity
 
 class PeopleAdapter : ListAdapter<Person, PeopleAdapter.PersonViewHolder>(DIFF_CALLBACK) {
 
-    var onItemClick: ((Person) -> Unit)? = null
+    var onItemClick: ((Person, Int) -> Unit)? = null
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Person>() {
@@ -27,19 +29,17 @@ class PeopleAdapter : ListAdapter<Person, PeopleAdapter.PersonViewHolder>(DIFF_C
     inner class PersonViewHolder(private val binding: ItemPersonBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(person: Person) {
-
-            binding.textViewName.text = "${person.firstName} ${person.lastName}"
+        fun bind(person: Person, position: Int) {
+            binding.textViewName.text = "${position + 1}. ${person.firstName} ${person.lastName}"
             binding.textViewEmail.text = person.email
             binding.textViewJobTitle.text = person.jobtitle
-
 
             Glide.with(binding.imageViewAvatar.context)
                 .load(person.avatar)
                 .into(binding.imageViewAvatar)
 
             binding.root.setOnClickListener {
-                onItemClick?.invoke(person)
+                onItemClick?.invoke(person, position)
             }
         }
     }
@@ -50,6 +50,6 @@ class PeopleAdapter : ListAdapter<Person, PeopleAdapter.PersonViewHolder>(DIFF_C
     }
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 }

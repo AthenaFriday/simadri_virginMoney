@@ -5,4 +5,7 @@
     <string name="title_rooms">Rooms</string>
     <string name="avatar_desc">Avatar image</string>
     <string name="room_icon_desc">Rooms</string>
+    <string name="contact_details">Contact Details</string>
+    <string name="contact_information">Contact Detail</string>
+    <string name="additional_information">More Information</string>
 </resources>
